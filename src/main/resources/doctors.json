@@ -1,0 +1,22 @@
+[
+  {
+    "fullName": "Dr. Alice Dupont",
+    "specialty": "Cardiology"
+  },
+  {
+    "fullName": "Dr. Karim El Idrissi",
+    "specialty": "Dermatology"
+  },
+  {
+    "fullName": "Dr. Sophie Martin",
+    "specialty": "Pediatrics"
+  },
+  {
+    "fullName": "Dr. Jean-Pierre Laurent",
+    "specialty": "Orthopedics"
+  },
+  {
+    "fullName": "Dr. Nadia Benali",
+    "specialty": "Neurology"
+  }
+]

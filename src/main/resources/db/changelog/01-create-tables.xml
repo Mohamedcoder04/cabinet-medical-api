@@ -1,0 +1,89 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="01-schema" author="mohamed">
+        <createTable tableName="doctor">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="slot">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="doctor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="slot"
+                baseColumnNames="doctor_id"
+                constraintName="fk_slot_doctor"
+                referencedTableName="doctor"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+        <addNotNullConstraint tableName="slot" columnName="status" columnDataType="VARCHAR(50)"/>
+        <sql>
+            ALTER TABLE slot ADD CONSTRAINT chk_slot_status CHECK (status IN ('AVAILABLE','RESERVED'));
+        </sql>
+
+        <createTable tableName="appointment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="doctor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="slot_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="appointment"
+                baseColumnNames="doctor_id"
+                constraintName="fk_appointment_doctor"
+                referencedTableName="doctor"
+                referencedColumnNames="id"/>
+        <addForeignKeyConstraint
+                baseTableName="appointment"
+                baseColumnNames="slot_id"
+                constraintName="fk_appointment_slot"
+                referencedTableName="slot"
+                referencedColumnNames="id"/>
+
+        <addUniqueConstraint
+                tableName="appointment"
+                columnNames="slot_id"
+                constraintName="uq_appointment_slot"/>
+
+
+    </changeSet>
+
+</databaseChangeLog>
